@@ -1,0 +1,396 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC '-//ibatis.apache.org//DTD Sql Map 2.0//EN' 'http://ibatis.apache.org/dtd/sql-map-2.dtd'>
+
+<sqlMap namespace="lv1">
+		<!-- 회원정보  DTO-->
+	<typeAlias alias="evDTO" type="springController.DTO" />
+	<!-- 가지고 있는 선수  DTO-->
+	<typeAlias alias="evDTO2" type="springController.DTO2" />
+	<!-- 전광판  DTO-->
+	<typeAlias alias="evDTO3" type="springController.DTO4" />
+	<!-- 채팅-->
+	<typeAlias alias="evDTO5" type="springController.DTO3" />
+	<!-- 경기기록-->
+	<typeAlias alias="evDTO6" type="springController.DTO5" />
+	<!--  리그  -->
+	<typeAlias alias="evDTO7" type="springController.DTO6" />
+	<!--  리그 결과 -->
+	<typeAlias alias="evDTO8" type="springController.DTO7" />
+	<!-- 리그 결과 -->
+	<resultMap id="evRes9" class="evDTO8">
+							<result property="id" column="id" />
+							<result property="winscore" column="winscore" />
+							<result property="wincount" column="wincount" />
+							<result property="losecount" column="losecount" />
+							<result property="mygoal" column="mygoal" />
+							<result property="enemygoal" column="enemygoal" />
+							<result property="goalcount" column="goalcount" />
+							<result property="rankpoint" column="rankpoint" />
+	
+	</resultMap>
+	
+	
+	<!-- 회원정보 -->
+	<resultMap id="evRes" class="evDTO">
+							<result property="id" column="id" />
+							<result property="cash" column="cash" />
+							<result property="gamepoint" column="gamepoint" />
+							<result property="rankpoint" column="rankpoint" />
+							<result property="win" column="win" />
+							<result property="drow" column="drow" />
+							<result property="lose" column="lose" />
+							<result property="image" column="image" />
+							<result property="background" column="background" />
+		
+	</resultMap>
+		<!-- 리그 -->
+	<resultMap id="evRes8" class="evDTO7">
+							<result property="id" column="id" />
+							<result property="rankpoint" column="rankpoint" />
+							<result property="mg16" column="mg16" />
+							<result property="eg16" column="eg16" />
+							<result property="mg8" column="mg8" />
+							<result property="eg8" column="eg8" />
+							<result property="mg4" column="mg4" />
+							<result property="eg4" column="eg4" />
+							<result property="mg2" column="mg2" />
+							<result property="eg2" column="eg2" />
+							<result property="mg1" column="mg1" />
+							<result property="eg1" column="eg1" />
+							<result property="w16" column="w16" />
+							<result property="w8" column="w8" />
+							<result property="w4" column="w4" />
+							<result property="w2" column="w2" />
+							<result property="w1" column="w1" />							
+	</resultMap>
+	<!--  가지고 있는 선수정보 -->
+		<resultMap id="evRes2" class="evDTO2">
+							<result property="id" column="id" />
+							<result property="name" column="name" />
+				<result property="country" column="country" />
+	<result property="weight" column="weight" />
+	<result property="age" column="age" />
+	<result property="limit" column="limit" />
+	<result property="rank" column="rank" />
+	<result property="pay" column="pay" />
+	<result property="fw" column="fw" />
+<result property="mf" column="mf" />
+<result property="df" column="df" />
+<result property="gk" column="gk" />
+<result property="image" column="image" />
+<result property="status" column="status" />
+<result property="position" column="position" />
+
+	</resultMap>
+	<!--  구단가치  공   미드  방어 출력 -->
+<resultMap id="evRes3" class="evDTO2">
+<result property="num" column="num" />
+</resultMap>
+<resultMap id="evRes5" class="evDTO5">
+<result property="id" column="id" />
+<result property="content" column="content" />
+</resultMap>
+
+<resultMap id="evRes5_1" class="evDTO5">
+<result property="id" column="id" />
+<result property="content" column="content" />
+<result property="wisper" column="wisper" />
+</resultMap>
+
+	
+<resultMap id="evRes4" class="evDTO3">
+<result property="id" column="id" />
+<result property="player" column="player" />
+<result property="rank" column="rank" />
+</resultMap>
+
+<resultMap id="evRes7" class="evDTO">
+<result property="id" column="id" />
+<result property="rankpoint" column="rankpoint" />
+</resultMap>
+<resultMap id="evRes6" class="evDTO6">
+<result property="id" column="id" />
+<result property="enemyid" column="enemyid" />
+<result property="mygoal" column="mygoal" />
+<result property="enemygoal" column="enemygoal" />
+<result property="result" column="result" />
+<result property="rankpoint" column="rankpoint" />
+<result property="reg_date" column="reg_date" />
+</resultMap>				
+
+
+
+<!--  구단가치  출력 -->
+	<insert id="lgresultinsert" parameterClass="evDTO8">
+		INSERT INTO lgresult (id,							
+							winscore ,
+							wincount ,
+							losecount ,
+							mygoal ,
+							enemygoal,
+							goalcount ,
+							rankpoint 
+							 )
+					  VALUES ( #id#,
+					  		#winscore#,
+					  		#wincount#,
+							#losecount#,
+							#mygoal#,
+							#enemygoal#,
+							#goalcount#,
+							#rankpoint#
+						     )
+	</insert>
+	<!-- insert 쿼리문 정의 -->
+	<insert id="insertplayer" parameterClass="evDTO">
+		INSERT INTO member_info (id,
+								cash,
+							  gamepoint,
+							  rankpoint,
+							  win,
+							  drow,
+							  lose,
+							  image,
+							  background
+							 )
+					  VALUES ( #id#,
+					  		#cash#,
+					  		#gamepoint#,
+							#rankpoint#,
+							
+							#win#,
+							#drow#,
+							#lose#,
+							#image#,
+							#background#
+						     )
+	</insert>
+	<!-- insert 쿼리문 정의 -->
+	<insert id="insertchat" parameterClass="evDTO5">
+		INSERT INTO chat (id,
+						content,
+						date1,
+						date2,
+						wisper
+							
+							 )
+					  VALUES ( #id#,
+					  		#content#,
+					  		#date1#,
+					  		sysdate,
+					  		#wisper#
+					  	
+						     )
+	</insert>
+	<!--  경기결과 -->
+	<insert id="result" parameterClass="evDTO6">
+		INSERT INTO fbresult ( id,
+						enemyid,
+						mygoal,
+						enemygoal,
+						result,
+	 					rankpoint,
+						reg_date	
+							 )
+					  VALUES ( #id#,
+					  		#enemyid#,
+					  		#mygoal#,
+					  		#enemygoal#,				  	
+					  		#result#,
+					  		#rankpoint#,
+					  		#reg_date#
+						     )
+	</insert>
+	<!-- 랭크 신청 -->
+	<insert id="signup" parameterClass="evDTO7">
+		INSERT INTO league ( 
+							id,
+							rankpoint,
+							mg16,
+							eg16,
+							mg8,
+							eg8,
+							mg4,
+							eg4,
+							mg2,
+							eg2,
+							mg1,
+							eg1,
+							w16,
+							w8,
+							w4,
+							w2 ,
+							w1 	
+							 )
+					  VALUES ( #id#,
+					  		#rankpoint#,
+					  	#mg16#,
+					  	#eg16#,
+					  	#mg8#,
+					  	#eg8#,
+					  	#mg4#,
+					  	#eg4#,
+					  	#mg2#,
+					  	#eg2#,
+					  	#mg1#,
+					  	#eg1#,
+					  	#w16#,
+					  	#w8#,
+					  	#w4#,
+					  	#w2#,
+					  	#w1#
+					  
+						     )
+	</insert>
+	
+	<!--  메인 전적 출력 -->
+	<select id="mainselect" resultMap="evRes"  parameterClass="String">
+	select * from member_info where id=#id#
+	
+	</select>
+	<!--  전광판 출력-->
+	<select id="lotto" resultMap="evRes4" >
+	select * from lotto 
+	
+	</select>
+	<!--  매칭 알고리즘 -->
+	<select id="mainselectall" resultMap="evRes" parameterClass="String">
+	select * from member_info order by rankpoint
+	
+	</select>
+	
+	<select id="mainselectall1" resultMap="evRes7" parameterClass="String">
+	select a.id, a.rankpoint from member_info a, (select id, count(status) as cnt from member_player group by id, status having status='playing') b where a.id = b.id and b.cnt = 11
+	
+	</select>
+	
+	<!-- 구단가치 널 예외처리 -->
+	<select id="idselect"  resultMap="evRes2"   parameterClass="String">
+	select * from member_player where id=#id#
+	</select>
+	
+	<!--  메인 구단가치  공격 출력 -->
+	<select id="mainselect1" resultClass="int"  parameterClass="String">
+	select sum(fw) as num from member_player where id=#id# 
+	
+	</select>
+	<!--  메인 구단가치  미드 출력 -->
+	<select id="mainselect2" resultClass="int"  parameterClass="String">
+	select sum(mf) as num from member_player where id=#id# 
+	
+	</select>
+		<!--  메인 구단가치  방어 출력 -->
+	<select id="mainselect3" resultClass="int"  parameterClass="String">
+	select sum(df) as num from member_player where id=#id# 
+	</select>
+	<!--  선수 출력 -->
+	<select id="playmember"   resultMap="evRes2" parameterClass="String">
+	select * from member_player where id=#id# and status='playing'
+	</select>
+	<!--  선수 미드필더공격 -->
+	<select id="attack"     resultMap="evRes2"    parameterClass="String" >
+	select * from member_player where id=#id# and status='playing' and position='MF'
+	</select>
+	<!--  선수 공격수공격 -->
+	<select id="attack1"     resultMap="evRes2"    parameterClass="String" >
+	select * from member_player where id=#id# and status='playing' and position='FW'
+	</select>
+		<!-- ai선수 미드필더방어 -->
+	<select id="aiattack"     resultMap="evRes2">
+	select * from member_player where id=#id# and status='playing' and position='MF'
+	</select>
+	<!--   ai 선수 수비수 방어 -->
+	<select id="aiattack1"     resultMap="evRes2">
+	select * from member_player where id=#id# and status='playing' and position='DF'
+	</select>
+	
+	<!--   ai 선수 골키퍼 방어 -->
+	<select id="aiattack2"     resultMap="evRes2">
+	select * from member_player where id=#id# and status='playing' and position='GK'
+	</select>
+	<!--  선수 횟수 차감 -->
+	<update id="discountlimit"       parameterClass="String">
+	update member_player set limit=limit-1  where id=#id# and status='playing' 
+	</update>
+	<!--  게임돈 추가-->
+	<update id="showmoney"       parameterClass="evDTO">
+	update member_info set rankpoint=rankpoint+#rankpoint# , gamepoint=gamepoint+#gamepoint#  where id=#id#  
+	</update>
+	<!--  채팅 -->
+	<select  id="chat" resultMap="evRes5">
+	select * from chat  where wisper='null' order by date2 desc
+	</select>
+	<!--  채팅 귓속말 -->
+	<select  id="chat1" resultMap="evRes5_1" parameterClass="String">
+	select * from chat where wisper=#wisper# order by date2 desc
+	</select>
+	<!--  전적 갱신 -->
+	<update id="showwin"       parameterClass="String">
+	update member_info set win=win+1  where id=#id#  
+	</update>
+	<update id="showdrow"       parameterClass="String">
+	update member_info set drow=drow+1  where id=#id#  
+	</update>
+	<update id="showlose"       parameterClass="String">
+	update member_info set lose=lose+1  where id=#id#  
+	</update>
+	
+	<!--  리그참가  아이디 검사 -->
+	<select id="sign"   resultClass="String" parameterClass="String" >
+	select id from league where id=#id#
+	</select>
+	
+	<!--  리그참가 16강 아이디 출력 -->
+	<select id="lglist16"   resultMap="evRes8" parameterClass="evDTO7">
+	select * from league order by rankpoint desc
+	</select>
+	<!--  리그참가  8강 아이디 출력 -->
+	<select id="lglist8"   resultMap="evRes8" parameterClass="evDTO7">
+	select * from league where w16='win' order by rankpoint desc
+	</select>
+	<!--  리그참가  4강 아이디 출력 -->
+	<select id="lglist4"   resultMap="evRes8" parameterClass="evDTO7">
+	select * from league where w8='win' order by rankpoint desc
+	</select>
+	<!--  리그참가  준결승 아이디 출력 -->
+	<select id="lglist2"   resultMap="evRes8" parameterClass="evDTO7">
+	select * from league where w4='win' order by rankpoint desc
+	</select>
+	<!--  리그참가  준결승 아이디 출력 -->
+	<select id="lglist1"   resultMap="evRes8" parameterClass="evDTO7">
+	select * from league where w2='win' order by rankpoint desc
+	</select>
+		<!--  리그참가  결승 아이디 출력 -->
+	<select id="lglistlast"   resultMap="evRes8" parameterClass="evDTO7">
+	select * from league where w1='win' order by rankpoint desc
+	</select>
+	
+	<!--  리그  16강 -->
+	<update  id="lggame16"   parameterClass="evDTO7">
+	update league set  mg16=#mg16#, eg16=#eg16#,w16=#w16# where id=#id# 
+	</update>
+	<!--  리그  8강 -->
+	<update  id="lggame8"   parameterClass="evDTO7">
+	update league set  mg8=#mg8#, eg8=#eg8#,w8=#w8# where id=#id# 
+	</update>
+	<!--  리그  4강 -->
+	<update  id="lggame4"   parameterClass="evDTO7">
+	update league set  mg4=#mg4#, eg4=#eg4#,w4=#w4# where id=#id# 
+	</update>
+	<!--  리그  2강 -->
+	<update  id="lggame2"   parameterClass="evDTO7">
+	update league set  mg2=#mg2#, eg2=#eg2#,w2=#w2# where id=#id# 
+	</update>
+	<!--  리그  결승전 -->
+	<update  id="lggame1"   parameterClass="evDTO7">
+	update league set  mg1=#mg1#, eg1=#eg1#,w1=#w1# where id=#id# 
+	</update>
+	<!--  리그  결승전 -->
+	<update  id="reset"   parameterClass="evDTO7">
+	update league set  mg16='',eg16='',mg8='',eg8='',mg4='',eg4='',mg2='',eg2='',mg1='',eg1='',w16='',w8='',w4='',w2='',w1='' 
+	</update>
+	<select id="lgresult" resultMap="evRes8" >
+	select * from league
+	</select>
+	
+</sqlMap>

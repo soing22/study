@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="Board">
+ 
+ 	<!-- 게시판 목록 조회 -->
+ 	<select id="selectBoardList" resultType="syj.blog.model.Board">
+ 		SELECT *
+			FROM (
+				SELECT originalquery.*, ROWNUM numb
+					,COUNT(*) OVER() AS records
+				FROM (
+				
+				 		SELECT	BOARD_NO		as	boardNo
+				 			  , BOARD_CAT		as	boardCat
+				 			  , BOARD_TITLE 	as boardTitle
+				 			  , BOARD_CONTENT	as	boardContent
+				 			  , READ_COUNT		as	readCount
+				 			  , FILE_NO			as	fileNo
+				 			  , CREATE_USER		as	createUser
+				 			  , TO_CHAR(CREATE_DATE,'yyyy.mm.dd hh12:mi:ss')	as	createDate
+				 			  , DEL_YN			as	delYn
+				 			  , STEP 			as	step
+				 			 FROM BOARD
+				 			WHERE DEL_YN = 'N'
+				 			<if test="searchItems != null and searchItems != ''">
+							 	AND ${searchOption} LIKE '%' || #{searchItems} || '%'
+							</if>
+	 					ORDER BY decode(GROUP_NO,0,BOARD_NO,group_no) DESC, REF_ORDER ASC
+		 			) originalquery
+			)p
+			WHERE (#{allRow} = 1) OR (numb BETWEEN #{startRow} AND #{endRow}) 
+ 	</select>
+ 	
+ 	<!-- 게시판 상세 조회 -->
+ 	<select id="selectBoardView" resultType="syj.blog.model.Board">
+	 	<choose>
+				<when test="boardNo != null and boardNo != '' and boardNo != 0">
+			 		SELECT	BOARD_NO		as	boardNo
+			 			  , BOARD_CAT		as	boardCat
+			 			  , BOARD_TITLE 	as boardTitle
+			 			  , BOARD_CONTENT	as	boardContent
+			 			  , READ_COUNT		as	readCount
+			 			  , FILE_NO			as	fileNo
+			 			  , CREATE_USER		as	createUser
+			 			  , TO_CHAR(CREATE_DATE,'yyyy.mm.dd hh12:mi:ss')	as	createDate
+			 			  , DEL_YN			as	delYn
+			 			  , DECODE(GROUP_NO,0, BOARD_NO,GROUP_NO) AS groupNo
+					      , REF_ORDER AS refOrder 
+					      , STEP AS step 
+			 			 FROM BOARD
+			 			WHERE BOARD_NO = #{boardNo}
+ 			</when>
+			<otherwise>
+ 				SELECT TO_CHAR(SYSDATE, 'yyyy.mm.dd hh12:mi:ss') as createDate FROM DUAL
+			</otherwise>
+		</choose>
+ 	</select>
+ 	
+ 	<!-- 게시판 저장 일시 조회 -->
+ 	<select id="selectSaveData" resultType="syj.blog.model.Board">
+ 		SELECT TO_CHAR(SYSDATE, 'yyyy.mm.dd hh12:mi:ss') as createDate FROM DUAL 
+ 	</select>
+ 	
+ 	<!-- 게시판 저장 -->
+ 	<insert id="insertBoardWrite">
+ 		<selectKey keyProperty="boardNo" resultType="syj.blog.model.Board" order="BEFORE">
+			SELECT FN_GET_SEQUENCE.NEXTVAL	AS	boardNo  FROM DUAL
+		</selectKey>
+ 		INSERT INTO BOARD (
+			   BOARD_NO
+			 , BOARD_TITLE
+			 , BOARD_CONTENT
+			 <if test="fileNo != 0">
+			 , FILE_NO
+			 </if>
+             , CREATE_USER
+             , CREATE_DATE
+             , DEL_YN
+		) VALUES (
+			   #{boardNo}
+			 , #{boardTitle}
+			 , #{boardContent}
+			 <if test="fileNo != 0">
+			 , #{fileNo}
+			 </if>
+			 , #{createUser}
+			 , sysdate
+			 , 'N'
+		)
+ 	</insert>
+ 	
+ 	<!-- 게시판 수정 -->
+ 	<update id="updateBoardWrite">
+ 		UPDATE BOARD 
+		   SET BOARD_TITLE 	 = #{boardTitle}
+		   	 , BOARD_CONTENT = #{boardContent}
+		   	 , UPDATE_DATE   = sysdate
+		     , UPDATE_USER   = #{updateUser}
+		 WHERE BOARD_NO 	 = #{boardNo}
+ 	</update>
+ 	
+ 	<!-- 게시판 삭제 -->
+ 	<update id="deleteBoardView">
+		UPDATE BOARD 
+		   SET DEL_YN 		= 'Y'
+		     , UPDATE_DATE  = sysdate
+		     , UPDATE_USER  = #{updateUser}
+		 WHERE BOARD_NO 	= #{boardNo}
+ 	</update>
+ 	
+ 	<!-- 조회수 증가 -->
+ 	<update id="updateReadCount">
+ 		UPDATE BOARD 
+		   SET READ_COUNT  = READ_COUNT + 1
+		 WHERE BOARD_NO    = #{boardNo}
+ 	</update>
+ 	
+ 	<!-- 파일 등록 -->
+ 	<insert id="insertBoardFile">
+ 		<selectKey keyProperty="fileNo" resultType="syj.blog.model.Board" order="BEFORE">
+			SELECT FN_GET_SEQUENCE.NEXTVAL	AS	fileNo FROM DUAL
+		</selectKey>
+ 		INSERT INTO BOARD_FILE (
+ 			  FILE_NO
+            , FILE_PATH
+            , OFILE_NAME
+            , DEL_YN
+            , CREATE_USER
+            , CREATE_DATE
+		) VALUES (
+			  #{fileNo}
+		    , #{filePath}
+		    , #{ofileName}
+		    , 'N'
+		    , #{createUser}
+		    , sysdate
+		)
+ 	</insert>
+ 	
+ 	<!-- 파일 목록 조회 -->
+ 	<select id="selectFileList" resultType="syj.blog.model.Board">
+ 		SELECT  A.BOARD_NO			AS	boardNo,
+				A.FILE_NO			AS	fileNo,
+				B.OFILE_NAME		AS	ofileName,
+				B.DOWN_COUNT		AS	downCount
+		  FROM BOARD A
+		  	 , BOARD_FILE B
+		 WHERE A.BOARD_NO = #{boardNo}
+		 AND A.FILE_NO = B.FILE_NO
+ 	</select>
+ 	
+ 	<!-- 파일 상세 조회 -->
+ 	<select id="selectBoardFileDownSerch"  resultType="syj.blog.model.Board">
+ 		SELECT	FILE_PATH	AS	filePath,
+			    OFILE_NAME	AS	ofileName
+	 	  FROM BOARD_FILE
+	 	WHERE FILE_NO = #{fileNo}
+ 	</select>
+ 	
+ 	<!-- 파일 다운로드 수 증가 -->
+	<update id="updateDownCount">
+		UPDATE BOARD_FILE 
+		   SET DOWN_COUNT = DOWN_COUNT + 1
+		 WHERE FILE_NO    = #{fileNo}
+	</update>
+ 	
+ 	<!-- 답글 처리 -->
+ 	<select id="selectReplyView" resultType="syj.blog.model.Board">
+ 		SELECT	BOARD_NO		as	boardNo
+ 			  , BOARD_CAT		as	boardCat
+ 			  , BOARD_TITLE		as	boardTitle
+ 			  , BOARD_CONTENT	as	boardContent
+ 			  , READ_COUNT		as	readCount
+ 			  , FILE_NO			as	fileNo
+ 			  , CREATE_USER		as	createUser
+ 			  , TO_CHAR(CREATE_DATE,'yyyy.mm.dd hh12:mi:ss')	as	createDate
+ 			  , DEL_YN			as	delYn
+ 			  , DECODE(group_no,0,BOARD_NO,group_no )  AS groupNo
+ 			  , DECODE(PARENT_NO, 0,BOARD_NO,PARENT_NO) AS parentNo
+		      , REF_ORDER AS refOrder 
+		      , STEP AS step 
+ 			 FROM BOARD
+ 			WHERE BOARD_NO = #{boardNo}
+ 	</select>
+ 	<update id="updateReplyView">
+ 		UPDATE BOARD
+		SET REF_ORDER = REF_ORDER+1
+		WHERE GROUP_NO = #{groupNo} 
+		AND REF_ORDER >=  #{refOrder}
+ 	</update>
+ 	
+ 	<!-- 답글 등록 -->
+ 	<insert id="replyBoardWrite">
+ 	<selectKey keyProperty="boardNo" resultType="syj.blog.model.Board" order="BEFORE">
+		SELECT FN_GET_SEQUENCE.NEXTVAL	AS	boardNo  FROM DUAL
+	</selectKey>
+	 	INSERT INTO BOARD (
+	 			   BOARD_NO
+				 , BOARD_TITLE
+				 , BOARD_CONTENT
+				 <if test="fileNo != 0">
+				 , FILE_NO
+				 </if>
+				 , GROUP_NO
+				 , PARENT_NO
+				 , STEP
+				 , REF_ORDER
+				 , CREATE_USER
+				 , CREATE_DATE
+				 , DEL_YN
+			) VALUES (
+				   #{boardNo}
+				 , #{boardTitle}
+				 , #{boardContent}
+				 <if test="fileNo != 0">
+				 , #{fileNo}
+				 </if>
+				 , #{groupNo}
+				 , #{boardNo}	 
+				 , #{step}
+				 , #{refOrder}
+				 , #{createUser}
+				 , sysdate
+				 , 'N'
+			)
+ 	</insert>
+ </mapper>

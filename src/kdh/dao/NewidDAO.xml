@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC '-//ibatis.apache.org//DTD Sql Map 2.0//EN' 'http://ibatis.apache.org/dtd/sql-map-2.dtd'>
+
+<sqlMap namespace="kdh" >
+		<!-- 회원정보  DTO-->
+	<typeAlias alias="NewidDTO" type="kdh.dao.NewidDTO" />
+
+
+	<resultMap id="idres" class="NewidDTO">
+							<result property="id" column="id" />
+							<result property="passwd" column="passwd" />
+							<result property="name" column="name" />
+							<result property="jumin1" column="jumin1" />
+							<result property="jumin2" column="jumin2" />
+							<result property="email" column="email" />
+							<result property="blog" column="blog" />
+							<result property="reg_date" column="reg_date" />
+
+	</resultMap>
+	
+		<insert id="newtable" parameterClass="NewidDTO">
+		INSERT INTO newid (id,							
+							passwd ,
+							name ,
+							jumin1 ,
+							jumin2 ,
+							email,
+							blog ,
+							reg_date 
+							 )
+					  VALUES
+					  		( #id#,
+					  		#passwd#,
+					  		#name#,
+							#jumin1#,
+							#jumin2#,
+							#email#,
+							#blog#,
+							#reg_date#
+						     )
+	</insert>
+	<select id="idlist" resultMap="idres">
+	select * from newid
+	</select>
+	</sqlMap>
+	

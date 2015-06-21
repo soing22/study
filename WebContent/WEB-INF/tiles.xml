@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE tiles-definitions PUBLIC
+"-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN"
+"http://tiles.apache.org/dtds/tiles-config_2.1.dtd">
+<tiles-definitions>
+
+	
+	<!-- layout 설정 -->
+	<definition name="syj.layout" template="/syj/layout/content.jsp">
+	    <put-attribute name="title" 		value="blog" />
+	    <put-attribute name="common" 		value="/syj/Common.jsp" />
+	    <!-- <put-attribute name="header" 		value="/layout/header.jsp" />
+	    <put-attribute name="left" 			value="/layout/left.jsp" />
+	    <put-attribute name="footer" 		value="/layout/footer.jsp" /> -->
+	</definition>
+	
+	
+	<definition name="*.jsp" extends="syj.layout">
+	    <put-attribute name="body" 	value="/syj/{1}.jsp" />
+	</definition>
+	
+	<definition name="*/*.jsp" extends="syj.layout">
+	    <put-attribute name="body" 	value="/syj/{1}/{2}.jsp" />
+	</definition>
+	
+	<definition name="*/*/*.jsp" extends="syj.layout">
+	    <put-attribute name="body" 	value="/syj/{1}/{2}/{3}.jsp" />
+	</definition>
+	
+	
+	
+</tiles-definitions>

@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans 
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:aop="http://www.springframework.org/schema/aop" 
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+       http://www.springframework.org/schema/aop
+       http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+       
+       
+    <context:component-scan base-package="*"/><!-- 해당 패키지 다검새 -->
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<value>/WEB-INF/dbconnect.properties</value>
+		</property>
+	</bean>
+	
+	<!-- DBCP를 위한 DataSource 객체 -->
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="${driver}"/>
+		<property name="url" value="${url}"/>
+		<property name="username" value="${username}"/>
+		<property name="password" value="${password}"/>
+  		<property name="maxActive" value="10" />
+  		<property name="maxIdle" value="3" />
+  		<property name="maxWait" value="10000" />
+  		<property name="defaultAutoCommit" value="true" />   <!--  기본:true  -->
+	</bean>
+	
+	<!--  SqlSessionFactoryBean : SqlSessionTemplate 객체를 얻는다. -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean" lazy-init="true">
+		<property name="dataSource" ref="dataSource" />
+        <property name="configLocation" value="classpath:/syj/blog/oracle/sql-mybatis-config.xml" />
+ 		<property name="mapperLocations" value="classpath:/syj/blog/oracle/*_oracle.xml" />
+		 <!-- 
+		 <property name="mapperLocations" value="classpath:com/think/mapper/**/*.xml" />
+		 -->
+         <!-- 
+         <property name="transactionFactory">
+                <bean class="org.apache.ibatis.transaction.managed.ManagedTransactionFactory" />
+          </property>
+           -->
+	</bean>
+	
+	<!-- 공통 dao -->
+    <bean id="boardDAOImpl" class="syj.blog.dao.BoardDAOImpl">
+      	<property name="sqlSession" ref="sqlSession"></property>
+    </bean>
+
+	<!-- SqlSessionTemplate : MyBatis SQL method 호출 및 관리, 예예처리 담당 -->
+    <bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+           <constructor-arg index="0" ref="sqlSessionFactory" />
+    </bean>
+
+    <!-- 트랜잭션관리자. -->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+
+	<!-- 트랜잭션과 관련된 작업(트랜잭션시작, 커및, 롤백등) -->
+    <bean id="transactionTemplate" class="org.springframework.transaction.support.TransactionTemplate">
+         <property name="transactionManager" ref="transactionManager" />
+     </bean> 
+	
+   <!--   <bean id="hello"   class="springController.HelloController"/>-->   <!--  패키지이름점.class -->
+   
+   
+    
+    <!--  
+   <bean id="viewResolver"
+   class="org.springframework.web.servelet.view.InternalResourceViewResolver">
+   <property name="prefix" value="/test"/>
+   <property name="subfix"  value=".jsp"/>
+   언노테이션 파일경로 확장자 줄이기
+   </bean>
+    -->
+   	
+   		
+     <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+     	<property name="maxUploadSize" value="-1"></property>
+     	<property name="defaultEncoding" value="euc-kr"></property>
+     </bean>
+     
+     <!-- Root 경로를 설정한다 -->
+     <!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/" />
+		<property name="contentType" value="text/html; charset=UTF-8"/>
+	</bean>
+	
+	
+     <!-- 파일다운로드 -->
+	<bean class="org.springframework.web.servlet.view.BeanNameViewResolver">
+  		<property name="order" value="0"/>
+  	</bean>
+	<bean id="downloadView" class="syj.blog.model.DownloadView" />
+
+	
+     <!-- Tiles 사용을 위한 세팅 
+	<bean id="tilesConfigurer"
+		class="org.springframework.web.servlet.view.tiles2.TilesConfigurer">
+	
+		<property name="definitions">
+			<value>/WEB-INF/tiles.xml</value>
+		</property>
+	</bean>
+	<bean id="tilesViewResolver"
+		class="org.springframework.web.servlet.view.UrlBasedViewResolver">
+
+		<property name="viewClass"
+			value="org.springframework.web.servlet.view.tiles2.TilesView" />
+		<property name="order" value="1" />
+	</bean>-->
+	
+     
+     </beans>

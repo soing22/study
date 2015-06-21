@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC '-//ibatis.apache.org//DTD Sql Map 2.0//EN' 'http://ibatis.apache.org/dtd/sql-map-2.dtd'>
+
+<sqlMap namespace="lkc" >
+		<!-- 회원정보  DTO-->
+	<typeAlias alias="blogcreateDTO" type="lkc.context.blogDTO" />
+	<typeAlias alias="datebaseDTO" type="lkc.context.dbDTO" />			
+
+	<resultMap id="blogcreateRes" class="blogcreateDTO">
+							<result property="blog_id" column="blog_id" />
+							<result property="blog_num" column="blog_num" />
+							<result property="blog_title" column="blog_title" />
+							<result property="blog_visible" column="blog_visible" />
+							<result property="blog_level1" column="blog_level1" />
+							<result property="blog_level2" column="blog_level2" />
+	</resultMap>
+		<resultMap id="databaseRes" class="datebaseDTO">
+							<result property="group1" column="group1" />
+							<result property="group2" column="group2" />
+							<result property="group3" column="group3" />
+							<result property="num1" column="num1" />
+							<result property="num2" column="num2" />
+							<result property="num3" column="num3" />
+							<result property="money1" column="money1" />
+							<result property="money2" column="money2" />
+							<result property="money3" column="money3" />
+
+	</resultMap>
+	<select id="blogcreateselect" resultMap="blogcreateRes" >
+	select * from blog_category
+	</select>
+		<insert id="createdb" parameterClass="datebaseDTO">
+		INSERT INTO store (group1,							
+							group2 ,
+							group3,
+							num1 ,
+							num2 ,
+							num3,
+							money1 ,
+							money2,
+							money3 
+							 )
+					  VALUES
+					  		( #group1#,
+					  		#group2#,
+					  		#group3#,
+							#num1#,
+							#num2#,
+							#num3#,
+							#money1#,
+							#money2#,
+							#money3#
+						     )
+	</insert>
+<select id="javalist"  resultMap="databaseRes">
+select * from store
+</select>
+<select id="dblist1"  resultMap="databaseRes">
+select * from(
+select * from store where  (  
+  (num1>#num1#) 
+or(num1=#num1# and num2>#num2#)
+or(num1=#num1#and num2=#num2# and num3>#num3#) 
+)order by num1,num2,num3  
+) where rownum <![CDATA[<=]]>#cnt#+1
+</select>
+<select id="dblist2"   resultMap="databaseRes" >
+SELECT * FROM (
+     SELECT A.*, 
+                 ROWNUM AS RNUM,
+                 FLOOR((ROWNUM-1)/#cnt#+1) AS PAGE,
+                 COUNT(*) OVER() AS TOTCNT FROM store A
+) WHERE PAGE = #num1#
+</select>
+</sqlMap>
