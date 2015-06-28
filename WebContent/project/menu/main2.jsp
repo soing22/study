@@ -6,10 +6,10 @@
 <meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
 <meta name="robots" content="all" />
 <title>jQuery Mega Drop Down Menu Plugin v 1.2</title>
-<link href="css/dcmegamenu.css" rel="stylesheet" type="text/css" />
+<link href="/blog2/project/menu/css/dcmegamenu.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
-<script type='text/javascript' src='js/jquery.hoverIntent.minified.js'></script>
-<script type='text/javascript' src='js/jquery.dcmegamenu.1.2.js'></script>
+<script type='text/javascript' src='/blog2/project/menu/js/jquery.hoverIntent.minified.js'></script>
+<script type='text/javascript' src='/blog2/project/menu/js/jquery.dcmegamenu.1.2.js'></script>
 <script type="text/javascript">
 $(document).ready(function($){
 	$('#mega-menu-1').dcMegaMenu({
@@ -59,14 +59,14 @@ $(document).ready(function($){
 	});
 });
 </script>
-<link href="css/skins/black.css" rel="stylesheet" type="text/css" />
-<link href="css/skins/grey.css" rel="stylesheet" type="text/css" />
-<link href="css/skins/blue.css" rel="stylesheet" type="text/css" />
-<link href="css/skins/green.css" rel="stylesheet" type="text/css" />
-<link href="css/skins/light_blue.css" rel="stylesheet" type="text/css" />
-<link href="css/skins/orange.css" rel="stylesheet" type="text/css" />
-<link href="css/skins/red.css" rel="stylesheet" type="text/css" />
-<link href="css/skins/white.css" rel="stylesheet" type="text/css" />
+<link href="/blog2/project/menu/css/skins/black.css" rel="stylesheet" type="text/css" />
+<link href="/blog2/project/menu/css/skins/grey.css" rel="stylesheet" type="text/css" />
+<link href="/blog2/project/menu/css/skins/blue.css" rel="stylesheet" type="text/css" />
+<link href="/blog2/project/menu/css/skins/green.css" rel="stylesheet" type="text/css" />
+<link href="/blog2/project/menu/css/skins/light_blue.css" rel="stylesheet" type="text/css" />
+<link href="/blog2/project/menu/css/skins/orange.css" rel="stylesheet" type="text/css" />
+<link href="/blog2/project/menu/css/skins/red.css" rel="stylesheet" type="text/css" />
+<link href="/blog2/project/menu/css/skins/white.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
 <div class="wrap">
@@ -75,13 +75,13 @@ $(document).ready(function($){
 <h3>로그인,회원관련</h3> 
 <ul id="mega-menu-1" class="mega-menu">
 	<li><a href="#">로그인</a></li>
-	<li><a href="#">Products</a>
+	<li><a href="#">DB</a>
 		<ul>
-			<li><a href="#">Mobile Phones &#038; Accessories</a>
+			<li><a href="#">DB페이징 처리</a>
 				<ul>
-					<li><a href="#">Product 1</a></li>
-					<li><a href="#">Product 2</a></li>
-					<li><a href="#">Product 3</a></li>
+					<li><a href="/blog2/dblist1.do">디비다음키</a></li>
+					<li><a href="/blog2/dblist2.do">디비게시판</a></li>
+					<li><a href="/blog2/javalist.do?currentPage=1">자바게시판</a></li>
 				</ul>
 			</li>
 			<li><a href="#">Desktop</a>

@@ -8,7 +8,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-<form action="/blog2/dblist.do" method="get">
+<form action="/blog2/dblist1.do" method="get">
 기본15<input type="text" name="cnt" value="${cnt}">next1 <input type="text"  name="num1" value="${num1}"> next2<input type="text" name="num2" value="${num2}"> next3<input type="text" name="num3" value="${num3}">
 <input type="submit" value="다음">
 <table>

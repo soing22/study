@@ -290,7 +290,14 @@ public class BlogController {
 		return m;
 		
 	}
+	@RequestMapping("/main.do")
+	public ModelAndView form32(@ModelAttribute String dto,HttpSession session,HttpServletRequest rq) throws SQLException{
+		ModelAndView m=new ModelAndView();
 		
+	m.setViewName("/project/menu/main2.jsp");	
+		return m;
+		
+	}	
 
 	
 }
